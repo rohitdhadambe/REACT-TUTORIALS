@@ -1,4 +1,4 @@
-import { useState , useCallback } from 'react'
+import { useState , useCallback , useEffect , useRef} from 'react'
 import './index.css'
 
 
@@ -8,22 +8,31 @@ function App() {
   let [char, setChar] = useState(false);
   let [pass, setPass] = useState("");
 
+  const passwordRef = useRef(null);
+
+
   const passwordgenerator = useCallback(()=>{ 
     let pas = "";
     let str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     if (num) str += "0123456789"
     if (char) str += "!@#$%^&*(){}+_~"
   
-    for (let i = a; i <= array.length; i++){
+    for (let i = 0; i <= length; i++){
       let ch = (Math.random( ) * str.length + 1)
-      pas = str.charAt(ch);
+      pas += str.charAt(ch);
     }
-
     setPass(pas)
-
   }, [length ,num, char, setPass]);
 
- 
+ const copytocilp = useCallback(()=>{
+  passwordRef.current?.select();
+  passwordRef.current?.setSelectionRange(0,length+1);
+  window.navigator.clipboard.writeText(pass)
+ },[pass,length])
+
+ useEffect(()=>{ passwordgenerator() 
+ } , [length,num,char,passwordgenerator]);
+
   return (
     <>
     <h2 className='flex justify-center text-white '>
@@ -34,12 +43,14 @@ function App() {
       <div className="w-full">
         <div className="flex shadow rounded-lg overflow-hidden mb-4 mt-2 w-full">
           <input
-            className='outline-none w-full py-2 px-3 my-4 rounded-md readOnly'
+            className='outline-none w-full py-2 px-3 my-4 rounded-md '
             placeholder='PASSWORD'
             type='text'
             value={pass}
+            readOnly
+            ref={passwordRef}
           />
-          <button className='outline-none bg-blue-400 text-lg text-white px-3 py-0.5 shrink-0 mt-4 h-10 rounded-md'>
+          <button onClick={copytocilp} className='outline-none bg-blue-400 text-lg text-white px-3 py-0.5 shrink-0 mt-4 h-10 rounded-md'>
             COPY
           </button>
         </div>
