@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';  // Assuming App component is being used elsewhere
 import './index.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Layout from './layout.jsx';
+import Layout from './Layout.jsx';
 import Home from './components/home/Home.jsx';
 import About from './components/about/about.jsx';  // Import the About component
 
